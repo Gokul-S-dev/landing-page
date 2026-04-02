@@ -58,27 +58,4 @@ jobs:
               run: |
                 docker push ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}
 
-
-    # Deploy to ec2 instance
-    deploy:
-        needs: docker
-        runs-on: ubuntu-latest
-
-        steps:
-            - name: Set Version Tag
-              run: echo "TAG=${GITHUB_SHA::8}" >> $GITHUB_ENV
-
-            - name: Deploy via SSH
-              uses: appleboy/ssh-action@v0.1.7
-              with:
-                host: ${{ secrets.EC2_HOST }}
-                key: ${{ secrets.EC2_KEY }}
-                script: |
-                  docker stop react-landing-page || true
-                  docker rm react-landing-page || true
-                  docker pull ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${TAG}
-                  docker run -d -p 80:80 --name react-landing-page ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${TAG}
-
-
-              
           
