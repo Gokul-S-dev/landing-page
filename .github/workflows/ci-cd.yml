@@ -1,0 +1,35 @@
+name: React CI/CD Pipeline
+
+on:
+    push:
+        branches: [ "main" ]
+
+env:
+    IMAGE_NAME: react-landing-page
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v3
+            
+            - name: Setup Node js
+              uses: actions/setup-node@v3
+              with:
+                node-version: '20'
+            
+            - name: Cache Dependencies
+              uses: actions/cache@v3
+              with:
+                path: ~/.npm
+                key: ${{ hashFiles('package-lock.json') }}
+
+            - name: Install Dependencies
+              run: npm install
+
+            - name: Run Build
+              run: npm run build
+
+              
