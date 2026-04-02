@@ -52,10 +52,10 @@ jobs:
 
             - name: Build docker image
               run: |
-                docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${TAG } .
+                docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.TAG }} .
 
             - name: Push Docker Image
               run: |
-                docker push ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${TAG }
+                docker push ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}
 
           
